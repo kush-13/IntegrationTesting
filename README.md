@@ -1,5 +1,9 @@
 # IntegrationTesting
-Code to do integration testing of the website : Sockshop project
+Code to do integration testing of the website : Sockshop project https://github.com/microservices-demo/microservices-demo
 
-## WHY INTEGRATION TESTING IS IMPORTANT
-Integration testing evaluates the functionality of various modules when integrated to form one single unit. This testing validates smooth transitions between various integrated components of the software. The purpose of integration testing is to find defects and faults between multiple interfaces of the software
+### stpes to run this project
+- ``` git clone https://github.com/microservices-demo/microservices-demo ```
+- ``` cd microservices-demo/deploy/docker-compose ```
+- replace docker-compose.yml file and paste the locustfile.py in the same path .
+- run the command : ``` docker-compose -f docker-compose.yml up -d ```
+- log files will be generated in the path :  microservices-demo/deploy/docker-compose/integration_test_result.html
