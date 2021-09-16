@@ -178,8 +178,8 @@ services:
     ports:
      - "8089:8089"
     volumes:
-      - ./:/mnt/locust
-    command: sleep 10
+      - ./:/mnt/locust/
+    restart: always
     command: -f /mnt/locust/locustfile.py --html /mnt/locust/integration_test_result.html --headless --only-summary -r 1 -u 1 -t 10s
     depends_on:
       - "front-end"
