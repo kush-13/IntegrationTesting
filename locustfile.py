@@ -1,20 +1,9 @@
-## pre-requisite to run this file
-## pip install locust
-
-## steps to run this file
-## cd to the directory where this file is placed
-## run the command -> locust
-## go to your browser and type the url -> http://localhost:8089 
-## enter the target website's link {here in this case its the sockshop website}
-## start with integration testing ...
-## logs will be generated on the browser as well as the terminal
-
-
 import base64
 from locust import HttpUser, task
 
 
 class HelloWorldUser(HttpUser):
+    host = "http://host.docker.internal:80"
     @task
     def hello_world(self):
         # credentials for logging in          
@@ -23,14 +12,21 @@ class HelloWorldUser(HttpUser):
         base64_bytes = base64.b64encode(sample_string_bytes)
         base64string = base64_bytes.decode("ascii")
 
-        # exploring endpoints
+        # exploring endpoints before auth
         self.client.get("/")
         self.client.get("/category.html")
         self.client.get("/basket.html")
-        self.client.post("/orders")
+
+        # cant access orders if not logged in
+        with self.client.post("/orders", catch_response=True) as response:
+            if response.status_code >= 400:
+                response.success()
 
         # authoristion should be sucessfull with right details
         self.client.get("/login", headers={"Authorization":"Basic %s" % base64string})
+        
+        # accesing orders after logging in 
+        self.client.post("/orders")
         
         # getting all the items in the catalogue 
         catalogue = self.client.get("/catalogue").json()
